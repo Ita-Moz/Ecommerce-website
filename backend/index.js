@@ -19,6 +19,9 @@ mongoose
 app.use(cors())
 app.use(express.json())
 app.use(cookieParser())
+// Mã hoá bằng secret key cho cookies
+// app.use(cookieParser(process.env.COOKIE_SECRET_KEY))
+// Get cookie được mã hoá bằng req.signedCookies
 
 // ROUTES
 app.use("/api/auth", authRoute)

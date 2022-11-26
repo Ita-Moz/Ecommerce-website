@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 const User = require("../models/userModel")
-let refreshTokens = []
 const authController = {
 	generateAccessToken: (user) => {
 		return jwt.sign(
@@ -29,14 +28,12 @@ const authController = {
 		try {
 			const salt = await bcrypt.genSalt(10)
 			const hashedPassword = await bcrypt.hash(req.body.password, salt)
-
 			//Create a new user
 			const newUser = await new User({
 				username: req.body.username,
 				email: req.body.email,
 				password: hashedPassword
 			})
-
 			//Save user
 			const user = await newUser.save()
 			res.status(200).json(user)
@@ -59,7 +56,7 @@ const authController = {
 				const accessToken = authController.generateAccessToken(user)
 				const refreshToken = authController.generateRefreshToken(user)
 				await User.findByIdAndUpdate(user.id, { verifyRefreshToken: refreshToken })
-				//STORE REFRESH TOKEN IN 
+				//STORE REFRESH TOKEN IN
 				res.cookie("refreshToken", refreshToken, {
 					httpOnly: true,
 					secure: false,
@@ -67,7 +64,7 @@ const authController = {
 					sameSite: "strict"
 				})
 				const { password, ...others } = user._doc
-				res.status(200).json({ ...others, accessToken, refreshToken })
+				res.status(200).json({ ...others, accessToken })
 			}
 		} catch (error) {
 			res.status(500).json(error)
@@ -77,18 +74,20 @@ const authController = {
 	requestRefreshToken: async (req, res) => {
 		const refreshToken = req.cookies.refreshToken
 		if (!refreshToken) return res.status(401).json("Bạn chưa được xác thực")
-		if (!refreshTokens.includes(refreshToken)) {
+		const foundUser = await User.findOne({ verifyRefreshToken: refreshToken }).exec()
+		if (!foundUser) {
 			return res.status(403).json("Refresh token không hợp lệ")
 		}
-		jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (err, user) => {
-			if (err) {
+		jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, async (err, user) => {
+			if (err || foundUser.id !== user.id) {
 				console.log(err)
+				return res.status(403).json("Refresh token không hợp lệ")
 			}
-			refreshTokens = refreshTokens.filter((token) => token !== refreshToken)
+
 			// Create new access token, refresh token and send to user
 			const newAccessToken = authController.generateAccessToken(user)
 			const newRefreshToken = authController.generateRefreshToken(user)
-			refreshTokens.push(newRefreshToken)
+			await User.findByIdAndUpdate(user.id, { verifyRefreshToken: newRefreshToken })
 			res.cookie("refreshToken", refreshToken, {
 				httpOnly: true,
 				secure: false,
@@ -104,7 +103,12 @@ const authController = {
 
 	logoutUser: async (req, res) => {
 		//Clear cookies when user logs out
-		refreshTokens = refreshTokens.filter((token) => token !== req.body.token)
+		const refreshToken = req.cookies.refreshToken
+		const foundUser = await User.findOne({ verifyRefreshToken: refreshToken }).exec()
+		if (!foundUser) {
+			return res.status(403).json("Refresh token không hợp lệ")
+		}
+		await User.findByIdAndUpdate(foundUser.id, { verifyRefreshToken: "" })
 		res.clearCookie("refreshToken")
 		res.status(200).json("Logout successfully!")
 	}
