@@ -1,5 +1,9 @@
 function Products() {
-	return <div>Products</div>
+	return (
+		<div>
+			<div>Product</div>
+		</div>
+	)
 }
 
 export default Products

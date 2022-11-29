@@ -55,16 +55,15 @@ function Header() {
 				<Search className={'hidden lg:flex w-[35%]'}></Search>
 				<div className='flex items-center gap-3 w-[40%] justify-end '>
 					<div className='flex items-center gap-1'>
-						<LocalPhoneOutlinedIcon className='text-2xl md:text-4xl' />
+						<LocalPhoneOutlinedIcon
+							sx={{ fontSize: '28px', cursor: 'pointer' }}
+						/>
 						<div className='text-[13px] md:text-[15px]'>
 							<p>Hotline</p>
 							<strong>1900 0000</strong>
 						</div>
 					</div>
 					<div className='hidden lg:flex justify-center items-center gap-2'>
-						<AccountCircleOutlinedIcon
-							sx={{ fontSize: '24px', cursor: 'pointer' }}
-						/>
 						<LightTooltip
 							title={
 								<Stack direction='column' spacing={2}>
@@ -80,12 +79,19 @@ function Header() {
 									</a>
 								</Stack>
 							}>
-							<strong>Tài khoản</strong>
+							<div>
+								<AccountCircleOutlinedIcon
+									sx={{ fontSize: '28px', cursor: 'pointer' }}
+								/>
+								<strong className="cursor-pointer">Tài khoản</strong>
+							</div>
 						</LightTooltip>
 					</div>
 					<div className='centered gap-2' onClick={handleOpenCart}>
 						<Badge badgeContent={5} color='warning'>
-							<LocalMallOutlinedIcon className='cursor-pointer text-2xl md:text-3xl' />
+							<LocalMallOutlinedIcon
+								sx={{ fontSize: '28px', cursor: 'pointer' }}
+							/>
 						</Badge>
 						<strong className='hidden lg:inline-block'>Giỏ hàng</strong>
 					</div>
@@ -114,7 +120,7 @@ function NavBar() {
 		</div>
 	)
 	return (
-		<div className='hidden lg:flex items-center py-3 border-b border-gray-300'>
+		<div className='hidden lg:flex items-center py-3 border-b-[1px] border-gray-300'>
 			<div className='flex gap-5 font-medium'>
 				<Link to={'/'}>Trang chủ</Link>
 				<LightTooltip title={categoryProduct}>

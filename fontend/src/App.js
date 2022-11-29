@@ -1,12 +1,15 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Footer from './components/Footer'
-import FooterMobile from './components/FooterMobile'
+import NavigateMobile from './components/NavigateMobile'
 import Header from './components/Header'
 import config from './config/routes'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import Product from './pages/Product'
 import Search from './pages/Search'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Forgot from './pages/Forgot'
 
 export default function App() {
 	return (
@@ -18,10 +21,13 @@ export default function App() {
 						<Route path={config.home} element={<Home />} />
 						<Route path={config.search} element={<Search />} />
 						<Route path={config.product} element={<Product />} />
+						<Route path={config.login} element={<Login />} />
+						<Route path={config.register} element={<Register />} />
+						<Route path={config.forgotPassword} element={<Forgot />} />
 						<Route path='*' element={<NotFound />} />
 					</Routes>
-					<FooterMobile />
 				</div>
+					<NavigateMobile />
 				<Footer />
 			</div>
 		</BrowserRouter>
