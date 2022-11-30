@@ -2,6 +2,7 @@
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined'
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
+import { useSelector } from 'react-redux'
 import { Stack, Tooltip, tooltipClasses } from '@mui/material'
 import Badge from '@mui/material/Badge'
 import { styled } from '@mui/material/styles'
@@ -26,6 +27,7 @@ const LightTooltip = styled(({ className, ...props }) => (
 }))
 function Header() {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+	const user = useSelector((state) => state.auth.login.currentUser)
 	const handleOpenCart = () => {
 		setIsDrawerOpen(true)
 	}
@@ -66,24 +68,39 @@ function Header() {
 					<div className='hidden lg:flex justify-center items-center gap-2'>
 						<LightTooltip
 							title={
-								<Stack direction='column' spacing={2}>
-									<a
-										href='/login'
-										className='bg-primary centered text-white rounded-sm w-[200px] h-[40px] text-[16px] font-normal'>
-										Đăng nhập
-									</a>
-									<a
-										href='/registry'
-										className='bg-primary centered text-white rounded-sm w-[200px] h-[40px] text-[16px] font-normal'>
-										Đăng ký
-									</a>
-								</Stack>
+								user?.username ? (
+									<Stack direction='column' spacing={2}>
+										<a
+											href={`/profile`}
+											className='bg-primary centered text-white rounded-sm w-[200px] h-[40px] text-[16px] font-normal'>
+											Tài khoản
+										</a>
+										<a
+											href='/login'
+											className='bg-primary centered text-white rounded-sm w-[200px] h-[40px] text-[16px] font-normal'>
+											Đăng xuất
+										</a>
+									</Stack>
+								) : (
+									<Stack direction='column' spacing={2}>
+										<a
+											href='/login'
+											className='bg-primary centered text-white rounded-sm w-[200px] h-[40px] text-[16px] font-normal'>
+											Đăng nhập
+										</a>
+										<a
+											href='/registry'
+											className='bg-primary centered text-white rounded-sm w-[200px] h-[40px] text-[16px] font-normal'>
+											Đăng ký
+										</a>
+									</Stack>
+								)
 							}>
 							<div>
 								<AccountCircleOutlinedIcon
 									sx={{ fontSize: '28px', cursor: 'pointer' }}
 								/>
-								<strong className="cursor-pointer">Tài khoản</strong>
+								<strong className='cursor-pointer'>{user?.username?`Hi, ${user?.username}`:'Tài khoản'}</strong>
 							</div>
 						</LightTooltip>
 					</div>

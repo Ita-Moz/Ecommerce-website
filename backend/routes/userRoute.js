@@ -5,6 +5,9 @@ const { verifyToken, verifyTokenAndUserAuthorization } = require("../middleware/
 // GET ALL USERS
 router.get("/", verifyToken, userController.getAllUsers)
 
+// GET USER BY ID
+router.get("/:id", verifyToken, userController.getUserById)
+
 // DELETE USER
 router.delete("/:id", verifyTokenAndUserAuthorization, userController.deleteUser)
 

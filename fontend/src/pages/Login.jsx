@@ -1,24 +1,34 @@
+import CircularProgress from '@mui/material/CircularProgress'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { requestLoginUser } from '../api/apiRequest'
 import FormInput from '../components/FormInput'
 function Login() {
-	const [values, setValues] = useState({})
+	const [user, setUser] = useState({})
 	const [isSubmit, setIsSubmit] = useState(false)
 	const [formErrors, setFormErrors] = useState({})
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
+	const errorLogin = useSelector((state) => state.auth.login.error)
+	const isFetchingLogin = useSelector((state) => state.auth.login.isFetching)
 	const handleOnChange = (e) => {
 		const { name, value } = e.target
-		setValues({ ...values, [name]: value })
+		setUser({ ...user, [name]: value })
 	}
+
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		setIsSubmit(true)
-		setFormErrors(validate(values))
+		setFormErrors(validate(user))
 	}
 	useEffect(() => {
+		// If there is no error, then submit the form
 		if (Object.keys(formErrors).length === 0 && isSubmit) {
-			console.log('submit')
+			requestLoginUser(user, dispatch, navigate)
 		}
 	}, [formErrors])
+
 	const validate = (values) => {
 		const { password, username } = values
 		const errors = {}
@@ -72,10 +82,19 @@ function Login() {
 								Quên mật khẩu?
 							</a>
 						</div>
+						{errorLogin && (
+							<div className='text-red text-center'>
+								Tên đăng nhập hoặc mật khẩu không đúng!
+							</div>
+						)}
 						<button
 							type='submit'
 							className='inline-block text-white bg-primary mx-auto w-fit px-5 py-2 rounded-sm md:px-8 hover:bg-green-600 transition-all'>
-							Đăng nhập
+							{isFetchingLogin ? (
+								<CircularProgress size={20} color='inherit' />
+							) : (
+								'Đăng nhập'
+							)}
 						</button>
 					</div>
 				</form>

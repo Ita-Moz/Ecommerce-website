@@ -1,23 +1,29 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { requestRegisterUser } from '../api/apiRequest'
 import FormInput from '../components/FormInput'
+
 function Register() {
-	const [values, setValues] = useState({})
+	const [user, setUser] = useState({})
 	const [isSubmit, setIsSubmit] = useState(false)
 	const [formErrors, setFormErrors] = useState({})
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
 
 	const handleOnChange = (e) => {
 		const { name, value } = e.target
-		setValues({ ...values, [name]: value })
+		setUser({ ...user, [name]: value })
 	}
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		setIsSubmit(true)
-		setFormErrors(validate(values))
+		setFormErrors(validate(user))
 	}
 	useEffect(() => {
+		// If there is no error, submit the form
 		if (Object.keys(formErrors).length === 0 && isSubmit) {
-			console.log('submit')
+			requestRegisterUser(user,dispatch,navigate)
 		}
 	}, [formErrors])
 	const validate = (values) => {
