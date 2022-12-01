@@ -11,7 +11,9 @@ import {
 export const requestLoginUser = async (user, dispatch, navigate) => {
 	dispatch(loginStart())
 	try {
-		const response = await axios.post('/api/auth/login', user)
+		const response = await axios.post('/api/auth/login', user,{
+			withCredentials: true
+		})
 		dispatch(loginSuccess(response.data))
 		navigate('/')
 	} catch (error) {

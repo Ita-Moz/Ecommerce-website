@@ -36,9 +36,9 @@ const authController = {
 			})
 			//Save user
 			const user = await newUser.save()
-			res.status(200).json(user)
+			return res.status(200).json(user)
 		} catch (error) {
-			res.status(500).json(error)
+			return res.status(500).json(error)
 		}
 	},
 
@@ -46,14 +46,14 @@ const authController = {
 		try {
 			const user = await User.findOne({ username: req.body.username })
 			if (!user) {
-				res.status(400).json('Tên người dùng không hợp lệ!')
+				return res.status(400).json('Tên người dùng không hợp lệ!')
 			}
 			const validPassword = await bcrypt.compare(
 				req.body.password,
 				user.password
 			)
 			if (!validPassword) {
-				res.status(404).json('Password không hợp lệ!')
+				return res.status(404).json('Password không hợp lệ!')
 			}
 			if (user && validPassword) {
 				const accessToken = authController.generateAccessToken(user)
@@ -69,10 +69,10 @@ const authController = {
 					sameSite: 'strict'
 				})
 				const { password, verifyRefreshToken, ...others } = user._doc
-				res.status(200).json({ ...others, accessToken })
+				return res.status(200).json({ ...others, accessToken })
 			}
 		} catch (error) {
-			res.status(500).json(error)
+			return res.status(500).json(error)
 		}
 	},
 

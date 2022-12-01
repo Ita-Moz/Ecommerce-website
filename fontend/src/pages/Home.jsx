@@ -13,6 +13,7 @@ import Product from '../components/Product'
 import Tag from '../components/Tag'
 import { bannerMilk, bgCategory, brand, products, slider } from '../config/images'
 import { dataFoodFish, dataProductFish } from '../data/data'
+
 function Home() {
 	const arrayCategory = ['Rau xanh, Rau tươi', 'Củ, quả, măng tươi', 'Hành, tỏi, ớt, rau thơm', 'Nấm các loại', 'Combo rau củ quả']
 	const arraySlider = Object.values(slider)
@@ -22,6 +23,7 @@ function Home() {
 
 	const [selected, setSelected] = useState(0)
 	const [productsSelected, setProductSelected] = useState(dataProductFish[0])
+
 	return (
 		<div className='w-full'>
 			<div className='mt-5 overflow-hidden rounded-lg'>

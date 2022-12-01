@@ -6,3 +6,8 @@ export default axios.create({
     'Content-type': 'application/json'
   }
 })
+export const axiosJWT= axios.interceptors.request.use(
+  async (config) => {
+    
+  }
+)
