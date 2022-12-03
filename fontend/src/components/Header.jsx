@@ -2,17 +2,21 @@
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined'
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined'
-import { useSelector } from 'react-redux'
 import { Stack, Tooltip, tooltipClasses } from '@mui/material'
 import Badge from '@mui/material/Badge'
 import { styled } from '@mui/material/styles'
+
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { requestLogoutUser } from '../api/apiRequest'
+import { createAxiosInterceptors } from '../api/axios'
 import logo from '../assets/images/logo.webp'
+import { loginSuccess } from '../redux/authSlice'
 import Cart from './Cart'
 import Search from './Search'
 
-// styled component for tooltip MUI
+// Styled component for tooltip MUI
 const LightTooltip = styled(({ className, ...props }) => (
 	<Tooltip {...props} classes={{ popper: className }} />
 ))(() => ({
@@ -25,11 +29,21 @@ const LightTooltip = styled(({ className, ...props }) => (
 		padding: '8px 16px'
 	}
 }))
+
 function Header() {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 	const user = useSelector((state) => state.auth.login.currentUser)
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
+	let axiosJWT = createAxiosInterceptors(user, dispatch, loginSuccess)
+
 	const handleOpenCart = () => {
 		setIsDrawerOpen(true)
+	}
+	const handleLogout = async () => {
+		dispatch(
+			await requestLogoutUser(dispatch, navigate, user?.accessToken, axiosJWT)
+		)
 	}
 	return (
 		<div>
@@ -75,11 +89,11 @@ function Header() {
 											className='bg-primary centered text-white rounded-sm w-[200px] h-[40px] text-[16px] font-normal'>
 											Tài khoản
 										</a>
-										<a
-											href='/login'
-											className='bg-primary centered text-white rounded-sm w-[200px] h-[40px] text-[16px] font-normal'>
+										<button
+											className='bg-primary centered text-white rounded-sm w-[200px] h-[40px] text-[16px] font-normal'
+											onClick={handleLogout}>
 											Đăng xuất
-										</a>
+										</button>
 									</Stack>
 								) : (
 									<Stack direction='column' spacing={2}>
@@ -89,7 +103,7 @@ function Header() {
 											Đăng nhập
 										</a>
 										<a
-											href='/registry'
+											href='/register'
 											className='bg-primary centered text-white rounded-sm w-[200px] h-[40px] text-[16px] font-normal'>
 											Đăng ký
 										</a>
@@ -100,7 +114,9 @@ function Header() {
 								<AccountCircleOutlinedIcon
 									sx={{ fontSize: '28px', cursor: 'pointer' }}
 								/>
-								<strong className='cursor-pointer'>{user?.username?`Hi, ${user?.username}`:'Tài khoản'}</strong>
+								<strong className='cursor-pointer'>
+									{user?.username ? `Hi, ${user?.username}` : 'Tài khoản'}
+								</strong>
 							</div>
 						</LightTooltip>
 					</div>

@@ -29,6 +29,7 @@ function Home() {
 			<div className='mt-5 overflow-hidden rounded-lg'>
 				<Carousel images={arraySlider} />
 			</div>
+
 			{/* Category */}
 			<section className='mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 xl:gap-7'>
 				{arrayBgCategory.map((item, index) => (
@@ -47,6 +48,7 @@ function Home() {
 						<Countdown time={'1/22/2023'} />
 					</div>
 				</div>
+
 				{/* Slider */}
 				<div className='mt-5'>
 					<Swiper
@@ -84,6 +86,7 @@ function Home() {
 					</Swiper>
 				</div>
 			</section>
+
 			{/* Brand */}
 			<section id='brand' className='mt-10'>
 				<h1 className='text-[22px] font-medium'>Thương hiệu nổi bật</h1>
@@ -96,6 +99,7 @@ function Home() {
 					</div>
 				</div>
 			</section>
+			
 			{/* Products list */}
 			<section className='mt-10 bg-gray-50 py-3 px-2 rounded-md lg:px-10'>
 				<div className='lg:flex lg:justify-between lg:items-center'>

@@ -103,7 +103,7 @@ const authController = {
 				path: '/',
 				sameSite: 'strict'
 			})
-			res.status(200).json({
+			return res.status(200).json({
 				accessToken: newAccessToken,
 				refreshToken: newRefreshToken
 			})
@@ -113,6 +113,7 @@ const authController = {
 	logoutUser: async (req, res) => {
 		//Clear cookies when user logs out
 		const refreshToken = req.cookies.refreshToken
+		console.log('logout token refresh:', refreshToken)
 		const foundUser = await User.findOne({
 			verifyRefreshToken: refreshToken
 		}).exec()
