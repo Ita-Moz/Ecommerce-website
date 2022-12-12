@@ -9,7 +9,7 @@ const authController = {
 				isAdmin: user.isAdmin
 			},
 			process.env.JWT_ACCESS_KEY,
-			{ expiresIn: '90s' }
+			{ expiresIn: '5s' }
 		)
 	},
 
@@ -97,7 +97,7 @@ const authController = {
 			await User.findByIdAndUpdate(user.id, {
 				verifyRefreshToken: newRefreshToken
 			})
-			res.cookie('refreshToken', refreshToken, {
+			res.cookie('refreshToken', newRefreshToken, {
 				httpOnly: true,
 				secure: false,
 				path: '/',

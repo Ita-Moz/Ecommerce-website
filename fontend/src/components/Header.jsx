@@ -35,7 +35,7 @@ function Header() {
 	const user = useSelector((state) => state.auth.login.currentUser)
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
-	let axiosJWT = createAxiosInterceptors(user, dispatch, loginSuccess)
+	const axiosJWT = createAxiosInterceptors(user, dispatch, loginSuccess)
 
 	const handleOpenCart = () => {
 		setIsDrawerOpen(true)

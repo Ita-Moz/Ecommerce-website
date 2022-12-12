@@ -25,6 +25,9 @@ function Register() {
 		if (Object.keys(formErrors).length === 0 && isSubmit) {
 			requestRegisterUser(user,dispatch,navigate)
 		}
+		return() => {
+			setIsSubmit(false)
+		}
 	}, [formErrors])
 	const validate = (values) => {
 		const { email, password, username, confirmPassword } = values

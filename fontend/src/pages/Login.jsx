@@ -27,6 +27,9 @@ function Login() {
 		if (Object.keys(formErrors).length === 0 && isSubmit) {
 			requestLoginUser(user, dispatch, navigate)
 		}
+		return () => {
+			setIsSubmit(false)
+		}
 	}, [formErrors])
 
 	const validate = (values) => {
@@ -102,5 +105,4 @@ function Login() {
 		</div>
 	)
 }
-
 export default Login

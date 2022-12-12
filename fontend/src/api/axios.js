@@ -7,7 +7,7 @@ export default axios.create({
 	baseURL,
 	headers: {
 		'Content-type': 'application/json'
-	}
+	},
 })
 
 const refreshToken = async () => {
@@ -43,4 +43,3 @@ export const createAxiosInterceptors = (user, dispatch, stateSuccess) => {
 	)
 	return newAxios
 }
-// refresh access token
