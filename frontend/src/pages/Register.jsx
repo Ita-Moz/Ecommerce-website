@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { requestRegisterUser } from '../api/apiRequest'
 import FormInput from '../components/FormInput'
+import { useSelector } from 'react-redux'
 
 function Register() {
 	const [user, setUser] = useState({})
@@ -10,7 +11,12 @@ function Register() {
 	const [formErrors, setFormErrors] = useState({})
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
-
+	const userRegister = useSelector((state) => state.auth.login.currentUser)
+	useEffect(() => {
+		if (userRegister) {
+			navigate('/')
+		}
+	})
 	const handleOnChange = (e) => {
 		const { name, value } = e.target
 		setUser({ ...user, [name]: value })
@@ -23,9 +29,9 @@ function Register() {
 	useEffect(() => {
 		// If there is no error, submit the form
 		if (Object.keys(formErrors).length === 0 && isSubmit) {
-			requestRegisterUser(user,dispatch,navigate)
+			requestRegisterUser(user, dispatch, navigate)
 		}
-		return() => {
+		return () => {
 			setIsSubmit(false)
 		}
 	}, [formErrors])

@@ -11,12 +11,17 @@ function Login() {
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const errorLogin = useSelector((state) => state.auth.login.error)
+	const userLogin = useSelector((state) => state.auth.login.currentUser)
+	useEffect(() => {
+		if (userLogin) {
+			navigate('/')
+		}
+	})
 	const isFetchingLogin = useSelector((state) => state.auth.login.isFetching)
 	const handleOnChange = (e) => {
 		const { name, value } = e.target
 		setUser({ ...user, [name]: value })
 	}
-
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		setIsSubmit(true)
