@@ -23,6 +23,7 @@ export const requestLoginUser = async (user, dispatch, navigate) => {
 		dispatch(loginFailed())
 	}
 }
+
 export const requestRegisterUser = async (user, dispatch, navigate) => {
 	dispatch(registerStart())
 	try {
@@ -34,6 +35,7 @@ export const requestRegisterUser = async (user, dispatch, navigate) => {
 		dispatch(registerFailed())
 	}
 }
+
 export const requestLogoutUser = async (
 	dispatch,
 	navigate,
@@ -44,7 +46,7 @@ export const requestLogoutUser = async (
 		dispatch(logoutStart())
 		await axiosJWT.post('/api/auth/logout', null, {
 			headers: {
-				token: `Bearer ${accessToken}`,
+				token: `Bearer ${accessToken}`
 			}
 		})
 		dispatch(logoutSuccess())

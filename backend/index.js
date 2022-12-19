@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser")
 const dotenv = require("dotenv")
 const authRoute = require("./routes/authRoute")
 const userRoute = require("./routes/userRoute")
+const productRoute = require("./routes/productRoute")
+const cartRoute = require("./routes/cartRoute")
 dotenv.config()
 const app = express()
 
@@ -27,6 +29,8 @@ app.use(cookieParser())
 // ROUTES
 app.use("/api/auth", authRoute)
 app.use("/api/user", userRoute)
+app.use("/api/product", productRoute)
+app.use("/api/cart", cartRoute)
 
 app.listen(5000, () => {
 	console.log("Server is running on port 5000")

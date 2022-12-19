@@ -20,6 +20,8 @@ const refreshToken = async () => {
 		console.log(error)
 	}
 }
+
+// middleware for axios interceptors to refresh token if expired and update redux store with new token and user 
 export const createAxiosInterceptors = (user, dispatch, stateSuccess) => {
 	const newAxios = axios.create({ baseURL, withCredentials: true })
 	newAxios.interceptors.request.use(

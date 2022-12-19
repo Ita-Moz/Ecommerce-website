@@ -28,7 +28,7 @@ function Login() {
 		setFormErrors(validate(user))
 	}
 	useEffect(() => {
-		// If there is no error, then submit the form
+		// Nếu form không có lỗi thì yêu cầu LoginUser
 		if (Object.keys(formErrors).length === 0 && isSubmit) {
 			requestLoginUser(user, dispatch, navigate)
 		}
