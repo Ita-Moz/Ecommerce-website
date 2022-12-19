@@ -30,11 +30,6 @@ const productSchema = new mongoose.Schema(
 			type: Schema.Types.ObjectId,
 			ref: "category",
 			required: true,
-		},
-		cart:{
-			type: Schema.Types.ObjectId,
-			ref: "cart",
-			required: true,
 		}
 	},
 	{ timestamps: true }
