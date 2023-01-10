@@ -29,7 +29,7 @@ function Login() {
 		e.preventDefault()
 		const error  = validate(user)
 		if (Object.keys(error).length === 0) {
-			requestRegisterUser(user, dispatch, navigate)
+			requestLoginUser(user, dispatch, navigate)
 		}else{
 			setFormErrors(error)
 		}
