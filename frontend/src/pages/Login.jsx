@@ -6,36 +6,34 @@ import { requestLoginUser } from '../api/apiRequest'
 import FormInput from '../components/FormInput'
 function Login() {
 	const [user, setUser] = useState({})
-	const [isSubmit, setIsSubmit] = useState(false)
 	const [formErrors, setFormErrors] = useState({})
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const errorLogin = useSelector((state) => state.auth.login.error)
+	const isFetchingLogin = useSelector((state) => state.auth.login.isFetching)
 	const userLogin = useSelector((state) => state.auth.login.currentUser)
 	useEffect(() => {
-		if (userLogin) {
+		if (!userLogin) return
+		if (userLogin.isAdmin) {
+			navigate('/admin')
+		} else {
 			navigate('/')
 		}
-	})
-	const isFetchingLogin = useSelector((state) => state.auth.login.isFetching)
+	},[])
+
 	const handleOnChange = (e) => {
 		const { name, value } = e.target
 		setUser({ ...user, [name]: value })
 	}
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		setIsSubmit(true)
-		setFormErrors(validate(user))
+		const error  = validate(user)
+		if (Object.keys(error).length === 0) {
+			requestRegisterUser(user, dispatch, navigate)
+		}else{
+			setFormErrors(error)
+		}
 	}
-	useEffect(() => {
-		// Nếu form không có lỗi thì yêu cầu LoginUser
-		if (Object.keys(formErrors).length === 0 && isSubmit) {
-			requestLoginUser(user, dispatch, navigate)
-		}
-		return () => {
-			setIsSubmit(false)
-		}
-	}, [formErrors])
 
 	const validate = (values) => {
 		const { password, username } = values

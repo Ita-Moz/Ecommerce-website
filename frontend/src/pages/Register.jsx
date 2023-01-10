@@ -7,13 +7,12 @@ import { useSelector } from 'react-redux'
 
 function Register() {
 	const [user, setUser] = useState({})
-	const [isSubmit, setIsSubmit] = useState(false)
 	const [formErrors, setFormErrors] = useState({})
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
-	const userRegister = useSelector((state) => state.auth.login.currentUser)
+	const isUser = useSelector((state) => state.auth.login.currentUser)
 	useEffect(() => {
-		if (userRegister) {
+		if (isUser) {
 			navigate('/')
 		}
 	})
@@ -23,18 +22,14 @@ function Register() {
 	}
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		setIsSubmit(true)
-		setFormErrors(validate(user))
-	}
-	useEffect(() => {
-		// If there is no error, submit the form
-		if (Object.keys(formErrors).length === 0 && isSubmit) {
+		const error  = validate(user)
+		if (Object.keys(error).length === 0) {
 			requestRegisterUser(user, dispatch, navigate)
+		}else{
+			setFormErrors(error)
 		}
-		return () => {
-			setIsSubmit(false)
-		}
-	}, [formErrors])
+	}
+
 	const validate = (values) => {
 		const { email, password, username, confirmPassword } = values
 		// eslint-disable-next-line no-useless-escape

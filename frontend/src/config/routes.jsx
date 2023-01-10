@@ -10,6 +10,7 @@ const routes = {
     forgotPassword: 'forgot',
     profile: 'profile',
     contact: 'contact',
+    admin: 'admin'
 };
 
 export default routes;

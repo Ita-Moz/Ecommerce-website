@@ -10,6 +10,7 @@ import Search from './pages/Search'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Forgot from './pages/Forgot'
+import Admin from './pages/Admin'
 
 export default function App() {
 	return (
@@ -24,6 +25,7 @@ export default function App() {
 						<Route path={config.login} element={<Login />} />
 						<Route path={config.register} element={<Register />} />
 						<Route path={config.forgotPassword} element={<Forgot />} />
+						<Route path={config.admin} element={<Admin />} />
 						<Route path='*' element={<NotFound />} />
 					</Routes>
 				</div>
