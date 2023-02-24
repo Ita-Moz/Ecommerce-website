@@ -1,7 +1,7 @@
 import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 
-const baseURL = 'http://localhost:5000'
+const baseURL = 'https://ecommerce-website-backend.vercel.app'|| 'http://localhost:5000'
 
 export default axios.create({
 	baseURL,
